@@ -1,27 +1,32 @@
 import React from 'react'
-import { useState } from 'react';
-import { useEffect } from 'react'
+
+
 
 const Camera = () => {
-    const [cameraMessage, setCameraMessage] = useState("este dispositivo no puede usar la camara de react");
-    
-    
-    useEffect(()=> {
-        
-        navigator.mediaDevices.getUserMedia({video: true})
-        if(navigator.mediaDevices){
-            setCameraMessage("Let's get this party started");
-            console.log(navigator.mediaDevices);
-        }else{
-            console.log("este dispositivo no puede usar la camara");
-        }
-    }, []);
 
-  return (
-    <div>
-        <h1>{cameraMessage}  </h1>
-    </div>
-  )
+
+    function openCamera() {
+        if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+            navigator.mediaDevices.getUserMedia({video: true})
+            .then(function (stream) {
+                var video = document.getElementById('video');
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch(function (error) {
+                console.log("unable to open camera: "+ error);
+            })
+        }
+    }
+
+
+
+    return (
+        <div>
+          <video id='video' autoPlay></video>
+          <button onClick={()=> openCamera() } className="btn btn-success">open camera</button>
+        </div>
+    )
 }
 
 export default Camera
