@@ -8,6 +8,7 @@ const Camera = () => {
     
     useEffect(()=> {
         
+        navigator.mediaDevices.getUserMedia({video: true})
         if(navigator.mediaDevices){
             setCameraMessage("Let's get this party started");
             console.log(navigator.mediaDevices);
