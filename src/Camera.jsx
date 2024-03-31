@@ -31,8 +31,10 @@ const Camera = () => {
 
                 const qrScanner = new QrScanner(
                     video,
-                    (result) => {setQrDecoded(result)
-                    handleShow()},
+                    (result) => {
+                        setQrDecoded(result)
+                        handleShow()
+                    }
                 );
                 qrScanner.start();
 
