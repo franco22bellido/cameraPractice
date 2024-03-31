@@ -1,28 +1,19 @@
 import React from 'react'
 import { useState } from 'react'
 import QrScanner from 'qr-scanner';
-import { useEffect } from 'react';
+import Modal from './components/Modal';
 
 
 const Camera = () => {
-    const constraints = {
-        video: {
-            width: {
-                min: 1280,
-                ideal: 1920,
-                max: 2560,
-            },
-            height: {
-                min: 720,
-                ideal: 1080,
-                max: 1440
-            },
-            facingMode: 'environment'
-        }
-    };
+
+    const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
 
     const [videoProperties, setVideoProperties] = useState();
-    const [qrDecoded, setQrDecoded] = useState("no info");
+    const [qrDecoded, setQrDecoded] = useState("www.google.com");
 
     const openCamera = async () => {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -40,7 +31,8 @@ const Camera = () => {
 
                 const qrScanner = new QrScanner(
                     video,
-                    result => setQrDecoded(result),
+                    (result) => {setQrDecoded(result)
+                    handleShow()},
                 );
                 qrScanner.start();
 
@@ -62,6 +54,9 @@ const Camera = () => {
                     </div>
                 </div>
             </div>
+            <Modal handleClose={handleClose} show={show} qrDecoded={qrDecoded}/>
+            {/* <button onClick={()=> handleShow()}>abrir modal </button> */}
+
         </section>
     )
 }
