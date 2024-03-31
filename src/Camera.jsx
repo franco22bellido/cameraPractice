@@ -4,7 +4,7 @@ import QrScanner from 'qr-scanner';
 
 
 const Camera = () => {
-    const constrains = {
+    const constraints = {
         video: {
           width: {
             min: 1280,
@@ -18,32 +18,35 @@ const Camera = () => {
           },
           facingMode: 'environment'
         }
-      }
-
+      };
 
     const [videoProperties, setVideoProperties] = useState();
+    const [qrDecoded, setQrDecoded] = useState("");
+
 
     const openCamera = async ()=> {
         if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({video: constrains});
+                const stream = await navigator.mediaDevices.getUserMedia({video: {
+                    facingMode : 'environment'
+                }});
                 videoProperties.srcObject = stream;
                 videoProperties.play();
                 
                 
                 const scan = ()=> {
                     try {
-                        while (true) {
+                       
                             setTimeout(()=> {
                                 const qrScanner = new QrScanner(
                                     videoProperties,
-                                    result => console.log('decoded qr code:', result),
+                                    result => setQrDecoded(result),
                                     { /* your options or returnDetailedScanResult: true if you're not specifying any other options */ },
                                 );
                                 qrScanner.start();
                                 console.log("scaneando");
                             }, 300);
-                        }   
+                       
                     } catch (error) {
                         console.log(error);
                     }
@@ -60,6 +63,7 @@ const Camera = () => {
     return (
         <div>
           <video id='video' autoPlay ref={video => {setVideoProperties(video)}} ></video>
+          <h1>{qrDecoded}</h1>
           <button onClick={()=> openCamera() } className="btn btn-success">open camera</button>
         </div>
     )
