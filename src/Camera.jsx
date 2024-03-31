@@ -32,7 +32,10 @@ const Camera = () => {
 
                 const qrScanner = new QrScanner(
                     video,
-                    result => setQrDecoded(result)
+                    result => {
+                        setQrDecoded(result)
+                        handleShow()
+                    }
                 );
                 qrScanner.start();
 
@@ -42,10 +45,8 @@ const Camera = () => {
 
         }
     }
-    // useEffect(()=> {
-    //     handleShow();
-    // }, [qrDecoded])
-
+    
+    
     return (
         <section className='container'>
             <div className='row'>
