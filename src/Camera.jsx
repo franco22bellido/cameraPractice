@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import QrScanner from 'qr-scanner';
 import Modal from './components/Modal';
+import { useEffect } from 'react';
 
 
 const Camera = () => {
@@ -31,10 +32,7 @@ const Camera = () => {
 
                 const qrScanner = new QrScanner(
                     video,
-                    (result) => {
-                        setQrDecoded(result)
-                        handleShow()
-                    }
+                    result =>setQrDecoded(result)
                 );
                 qrScanner.start();
 
@@ -44,6 +42,9 @@ const Camera = () => {
 
         }
     }
+    useEffect(()=> {
+        handleShow();
+    }, [setQrDecoded])
 
     return (
         <section className='container'>
