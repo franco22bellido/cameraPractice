@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import QrScanner from 'qr-scanner';
+import { useEffect } from 'react';
 
 
 const Camera = () => {
@@ -21,8 +22,7 @@ const Camera = () => {
       };
 
     const [videoProperties, setVideoProperties] = useState();
-    const [qrDecoded, setQrDecoded] = useState("");
-
+    const [qrDecoded, setQrDecoded] = useState("no info");
 
     const openCamera = async ()=> {
         if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
@@ -30,28 +30,17 @@ const Camera = () => {
                 const stream = await navigator.mediaDevices.getUserMedia({video: {
                     facingMode : 'environment'
                 }});
-                videoProperties.srcObject = stream;
-                videoProperties.play();
-                
-                
-                const scan = ()=> {
-                    try {
-                       
-                            setTimeout(()=> {
-                                const qrScanner = new QrScanner(
-                                    videoProperties,
-                                    result => setQrDecoded(result),
-                                    { /* your options or returnDetailedScanResult: true if you're not specifying any other options */ },
-                                );
-                                qrScanner.start();
-                                console.log("scaneando");
-                            }, 300);
-                       
-                    } catch (error) {
-                        console.log(error);
-                    }
-                  }
-                  scan();
+                // videoProperties.srcObject = stream;
+                // videoProperties.play();
+                let video = document.getElementById('video');
+                video.srcObject = stream;
+                video.play();
+
+                const qrScanner = new QrScanner(
+                    video,
+                    result => setQrDecoded(result),
+                );
+                qrScanner.start();
 
             } catch (error) {
                 console.log(error);
