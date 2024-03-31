@@ -1,32 +1,33 @@
 import React from 'react'
+import { useState } from 'react'
 
 
 
 const Camera = () => {
 
+    const [videoProperties, setVideoProperties] = useState();
 
-    function openCamera() {
+
+    const openCamera = async ()=> {
         if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
-            navigator.mediaDevices.getUserMedia({video: true})
-            .then(function (stream) {
-                var video = document.getElementById('video');
-                video.srcObject = stream;
-                video.play();
-            })
-            .catch(function (error) {
-                console.log("unable to open camera: "+ error);
-            })
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({video: true});
+                videoProperties.srcObject = stream;
+                videoProperties.play();
+            } catch (error) {
+                console.log(error);
+            }
+
         }
     }
 
-
-
     return (
         <div>
-          <video id='video' autoPlay></video>
+          <video id='video' autoPlay ref={video => {setVideoProperties(video)}} ></video>
           <button onClick={()=> openCamera() } className="btn btn-success">open camera</button>
         </div>
     )
 }
+
 
 export default Camera
