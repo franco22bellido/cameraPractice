@@ -30,18 +30,22 @@ const Camera = () => {
                 videoProperties.srcObject = stream;
                 videoProperties.play();
                 
-                const qrScanner = new QrScanner(
-                    videoProperties,
-                    result => console.log('decoded qr code:', result),
-                    { /* your options or returnDetailedScanResult: true if you're not specifying any other options */ },
-                );
-
-                  const scan = ()=> {
-                    try {   
-                        qrScanner.start();
-                        console.log("scaneando");
+                
+                const scan = ()=> {
+                    try {
+                        while (true) {
+                            setTimeout(()=> {
+                                const qrScanner = new QrScanner(
+                                    videoProperties,
+                                    result => console.log('decoded qr code:', result),
+                                    { /* your options or returnDetailedScanResult: true if you're not specifying any other options */ },
+                                );
+                                qrScanner.start();
+                                console.log("scaneando");
+                            }, 300);
+                        }   
                     } catch (error) {
-                        setTimeout(scan, 300);
+                        console.log(error);
                     }
                   }
                   scan();
